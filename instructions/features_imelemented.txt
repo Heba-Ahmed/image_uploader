@@ -1,0 +1,18 @@
+Features Implemented:
+
+- Upload pictures and give them a title and a description.
+- List all uploaded pictures and display them in a grid ( and display its title).
+- You should allow removal of uploaded pictures.
+- Clicking a picture display larger version of the image with its description.
+- I tried to make my website look attractive and be user-friendly.
+- I tried also to make it responsive; adapting to different screen sizes.
+
+
+Extras:
+
+- Implement a simple user registration/login system. ( using hashing for saving/retrieving password)
+- implement simple user logout.
+- Only logged-in users can upload pictures. 
+- Allow picture removal by the person who uploaded it.
+- Dynamic resizing of pictures in 'List' page ( I divided the screen into 6 equal spaces and not depending on screen size).
+

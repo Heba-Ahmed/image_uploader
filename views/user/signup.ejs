@@ -1,0 +1,56 @@
+
+
+<style>
+*.my_form_label {
+	width: 10px ;
+	text-align:right;
+	white-space:nowrap;
+	padding-right: 15px ;
+	padding-bottom: 15px ;
+	font-weight: bold ;
+}
+*.my_form_field {
+	text-align:left;
+}
+</style>
+
+<% var results = req.flash('fm'); %>
+<% if(results[0]){ %>
+	<div class="alert alert-<%- results[0].type %>" style="display: inline-block">
+		<%- results[0].message %>
+	</div>
+<% } %>
+<br>
+
+<br >
+    <div class="panel panel-default" style="width:100%">
+		  <div class="panel-heading">
+		  <span><b>Sign up</b></span>
+		  </div>
+		  <div class="panel-body">
+			<form role="form" name="LoginForm" action='/User/signup' method="POST" id="loginForm" onsubmit="return submitLoginForm()">
+				<table width="500px" border="0">
+
+				<tr>
+					<td class="my_form_label"></td>
+					<td class="my_form_field"><input class="form-control" style="width:300px;" placeholder="E-mail" name="email" id="email" type="email" autofocus></td>
+				</tr>
+
+				<tr>
+					<td class="my_form_label"></td>
+					<td class="my_form_field"><input class="form-control" style="width:300px;" placeholder="Password" name="password" id="password" type="password" value=""></td>
+				</tr>
+				
+				<tr>
+					<td class="my_form_label">&nbsp;</td>
+					<td align="left">
+					<input type="submit" value="Sign up" style="width:200px;" class="btn btn-lg btn-success btn-block">
+					</td>
+				</tr>
+
+			</table>
+
+		</form>
+		</div>
+
+	</div>

@@ -1,0 +1,208 @@
+   
+<style>
+*.my_form_label {
+	width: 20px ;
+	text-align:right;
+	white-space:nowrap;
+	padding-right: 15px ;
+	padding-bottom: 15px ;
+	font-weight: bold ;
+}
+*.my_form_field {
+	text-align:left;
+}
+
+.thumbnail {
+    margin:1px;
+    height: 185px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.grid{
+    margin: 0.5%
+}
+
+<!-- divide screen into 6 equal spaces ffto display the grid -->
+.col-lg-2 {
+    height: 240px;
+    width: 15.5%;
+    background: #fff;
+    border: 1px solid #ddd;
+    margin: 0.5%;
+    padding: 5px;
+    vertical-align: top;
+    box-shadow: 0 0 4px #ddd;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}
+.chkbox {position:absolute; right:5px; bottom:5px;} 
+.dark {
+    opacity: .2;
+}
+</style>
+
+<% var results = req.flash('fm'); %>
+<% if(results[0]){ %>
+	<div class="alert alert-<%- results[0].type%>" style="display: inline-block">
+		<%- results[0].message %>
+	</div>
+<% } %>
+<br>
+
+
+		
+		<form id="uploadForm" enctype="multipart/form-data" action="/Index/upload" method="post">
+			<table width="500px" border="0">
+
+			<tr>
+				<td class="my_form_field">
+					<input class="form-control" style="width:300px;" placeholder="File" type="file" name="uploadFile" autofocus>
+				</td>
+			</tr>
+
+			<tr>
+				
+				<td class="my_form_field">
+					<input class="form-control" style="width:300px;" placeholder="Title" name="title"  type="text" value="">
+				</td>
+			</tr>
+			
+			
+			<tr>
+				
+				<td class="my_form_field">
+					<input class="form-control" style="width:300px;" placeholder="Description" name="description"  type="text" value="">
+				</td>
+			</tr>
+			
+			<tr>
+				<td align="left">
+				<input type="submit" value="Upload" style="width:200px;" class="btn btn-lg btn-success btn-block">
+				</td>
+			</tr>
+
+		</table>
+		</form>
+
+<br >
+<br >
+    <div class="panel panel-default" style="width:100%">
+		<div class="panel-heading">
+			Number of uploaded images : <%- images.length %>
+		</div>
+		<div class="panel-body">
+			<div >
+            <button type="button" id="selectall" class="btn btn-primary" onClick="selectAll()">Select All</button>
+            <button type="button" id="selectall" class="btn btn-primary" onClick="UnselectAll()">Unselect All</button>
+        </div>
+        
+        <br >
+        
+			<div id="images_grid" class="row grid">
+			</div>
+			
+			<br >
+			<div id="error"></div>
+        
+			<button id="delete_selected" onClick="delete_selected()" type="button" class="btn btn-warning">
+            <i class="glyphicon glyphicons-remove"></i>
+            <span>Delete Selected images</span>
+        </button>
+	
+	<!--	
+			<div class="table-responsive">
+			<table class="table table-striped table-bordered table-hover" id="actions_table">
+				<thead>
+					<tr>
+						<th>image</th>
+						<th>title</th>
+						<th>description</th>
+						<th width="100px">Operations</th>
+					</tr>
+				</thead>
+				<tbody>
+					<% _.each(images, function (image) { %>
+					<tr id="dt_<%- image.id %>">
+						<td><a onClick="display_image('<%= image %>')"><img src="/images/<%= image.path%>" height="100" width="100"></a></td>
+						<td><%= image.title %></td>
+						<td><%= image.description %></td>
+						<td>
+							<span>
+							<a href="#" id="delete_<%- image.id %>" onclick="deleteaction('<%- image.id %>')">
+								<i class="fa fa-trash-o fa-lg"></i>
+							</a>
+							</span>
+						</td>
+					</tr>
+					<% }) %>
+			    </tbody>
+			</table>
+			
+
+		</div>
+
+-->
+	</div>
+
+<!--hidden form to submit images ids -->
+
+<form id="delete_images" action="/Index/delete_selected_images" method="POST">
+	<input id="images_ids" name ="images_ids" type="hidden">
+</form>
+
+<script>
+	
+	// set time 2 secs to finish image loading to display it correctly
+	$(document).ready(function() {
+		setTimeout( function(){
+			<% _.each(images , function(image) { %>
+				$("#images_grid").append('<div class="col-lg-2 col-sm-3 col-xs-4"><input id="<%= image.id%>" name="checkedValues[]" type="checkbox" class="chkbox" /> <input class="form-control" style="width:100%" value="<%= image.title%>" disabled type="text" /> <a onSelect="" data-title="<%= image.description %>" data-lightbox="batch" href="/images/<%= image.path %>"><img src="/images/<%= image.path %>" class="thumbnail img-responsive"></a></div>')
+			<% }) %>
+		} , 2000 );
+	})
+	
+	// select all  images.
+	function selectAll(){
+		 $("#error").html('');
+		$.each($('input[name="checkedValues[]"]') , function(index , checkbox){
+			checkbox.checked = true;
+		});
+	}
+
+	// unselect all images.
+	function UnselectAll(){
+		 $("#error").html('');
+		$.each($('input[name="checkedValues[]"]') , function(index , checkbox){
+			checkbox.checked = false;
+		});
+	}
+	
+	// delete selected images
+	function delete_selected(){
+			$("#error").html('');
+		// get all selected images ids
+		var checkedValues = $('input[name="checkedValues[]"]:checked').map(function() {return this.id;}).get();
+		
+		// check if no image selected then display error message
+		if(checkedValues.length == 0) {
+			$("#error").html('<div class="alert alert-danger" style="display: inline-block"> Please select images to delete.</div>');
+		}else{
+			// send ids to controllers to delete them
+			$("#images_ids").val(JSON.stringify(checkedValues));
+			$("#delete_images").submit();
+		}
+	}
+
+	/*function display_image(image_info) {
+		socket.get('/Index/diplay_image',{
+			image : image_info
+		});
+	}*/
+		
+
+  </script>
+  
+  
+  
+  

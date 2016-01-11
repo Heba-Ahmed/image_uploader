@@ -1,0 +1,30 @@
+Hello :) 
+
+- I implemented the task with Nodejs (sails framework)
+- I used mysql server , so just import the sql file : images_db_dump.sql
+- I used some libraries in nodejs : 
+	- underscore.js
+	- passport.js , passport-local.js for user authentication
+	- sails-mysql adapter for database 
+	- bcrypt.js for password encryption (hashing)
+
+- I used lightbox to dislay images
+
+- For testing add users by button " not a user , then Sign up "
+- To Run the project :
+	- install  mysql-server , nodejs , sails
+ 		- apt-get install mysql-server
+		- cd /usr/local
+		  wget http://nodejs.org/dist/v0.10.26/node-v0.10.26-linux-x64.tar.gz
+		  tar --strip-components 1 -xvzf node-v0.10.26-linux-x64.tar.gz
+		  npm install -g sails mysql
+
+- Then Run the project : 
+	- go to project dir
+	- type :  > sails lift 
+	     to open the server
+	- go to browser : http://localhost:1337/
+	- home page will appear with login form
+	- press sign up and add new user and start testing :)
+
+

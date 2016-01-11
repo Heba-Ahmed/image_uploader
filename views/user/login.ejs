@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>User - Login</title>
+
+    <!-- Core CSS - Include with every page -->
+    <link href="/styles/bootstrap.min.css" rel="stylesheet">
+    <link href="/font-awesome/css/font-awesome.css" rel="stylesheet">
+
+    <!-- SB Admin CSS - Include with every page -->
+    <link href="/styles/sb-admin.css" rel="stylesheet">
+    
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="col-md-4 col-md-offset-4">
+			<div class="row">
+				
+					<div class="alert alert-danger" id="client_errors"></div>
+					<% if((req.session.isloginfailed === true)){ %>
+					<div class="alert alert-danger" id="server_errors">
+						<a href="#" class="close" data-dismiss="alert">&times;</a>
+						<strong>Error!</strong> invalid username or password!
+					</div>
+					<%}%>
+					
+                <div class="login-panel panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><%- sails.config.presets.systemTitle %></h3>
+                    </div>
+                    <div class="panel-body">
+                        <form role="form" name="LoginForm" action='/User/login' method="POST" id="loginForm" onsubmit="return submitLoginForm()">
+							
+                            <fieldset>
+                                <div class="form-group">
+                                    <input class="form-control" placeholder="E-mail" name="email" id="email" type="email" autofocus>
+                                </div>
+                                <div class="form-group">
+                                    <input class="form-control" placeholder="Password" name="password" id="password" type="password" value="">
+                                </div>
+                                <!--
+                                <div class="checkbox">
+                                    <label>
+                                        <input name="remember" type="checkbox" value="Remember Me">Remember Me
+                                    </label>
+                                </div>
+                                -->                                
+                                <!-- Change this to a button or input when using this as a form -->
+                                <!--<a onclick="submitLoginForm()" class="btn btn-lg btn-success btn-block">Login</a>-->
+                                <input type="submit" value="Login" class="btn btn-lg btn-success btn-block">
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Core Scripts - Include with every page -->
+    <script src="/js/jquery-1.10.2.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+
+    <!-- SB Admin Scripts - Include with every page -->
+    <script src="/js/sb-admin.js"></script>
+    
+    <script>
+		
+		$( document ).ready(function() {
+			$("#client_errors").hide() ;
+		});
+		
+	function submitLoginForm(){
+		
+		var errors = [] ;
+		
+		if($("#email").val()=='') errors.push("Email field is required") ;
+		if($("#password").val()=='') errors.push("Password is required") ;
+		
+		if(errors.length==0) {
+			$("#client_errors").hide() ;
+			$("#server_errors").hide() ;
+			return true ;
+		}
+		else{
+			var errorString = '<ul>' ;
+			$.each(errors, function( index, error ) {
+			  errorString += '<li>'+error+'</li>' ;
+			});
+			errorString += '</ul>' ;
+			$("#client_errors").html(errorString) ;
+			$("#client_errors").show() ;
+			$("#server_errors").hide() ;
+			return false;
+		}
+	}
+	
+	</script>
+
+</body>
+
+</html>
